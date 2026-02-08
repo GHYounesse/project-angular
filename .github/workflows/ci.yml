@@ -27,7 +27,7 @@ jobs:
         run: echo "Lint not configured for this project"
 
       - name: Run unit tests
-        run: npx ng test calendar-apps
+        run: npx ng test demo
 
       - name: Build Angular app
         run: npm run build -- --prod
