@@ -30,4 +30,4 @@ jobs:
         run: npx ng test demo --watch=false --browsers=ChromeHeadless
 
       - name: Build Angular app
-        run: npm run build -- --prod
+        run: npm run build
