@@ -14,5 +14,11 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting()
 );
 
-const context = require.context('./', true, /\.spec\.ts$/);
-context.keys().map(context);
+try {
+  if (typeof require === 'function' && typeof require.context === 'function') {
+    const context = require.context('./', true, /\.spec\.ts$/);
+    context.keys().map(context);
+  }
+} catch (e) {
+  // Bundlers without require.context (esbuild) will skip dynamic spec loading.
+}
