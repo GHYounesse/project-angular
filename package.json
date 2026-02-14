@@ -4,8 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    
-    "build": "ng build --prod --output-path=wrong-dir",
+    "build": "ng build --configuration production",
     "test": "ng test"
   },
   "dependencies": {
