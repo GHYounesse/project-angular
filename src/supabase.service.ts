@@ -10,22 +10,25 @@ export interface Note {
   updated_at?: string;
 }
 
+
+import { environment } from '../src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class SupabaseService {
+  
   private supabase: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(
-      'https://tifzpikozynkynghzddy.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpZnpwaWtvenlua3luZ2h6ZGR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1MDY3MTcsImV4cCI6MjA4NjA4MjcxN30.kQEkMUeK9k3V887G6aNATDMPAXH27R-AIepz3jT7i-Y'
+      environment.supabaseUrl,
+      environment.supabaseAnonKey
     );
   }
 
   async getNotesByDate(date: string): Promise<Note[]> {
     const { data, error } = await this.supabase
-      .from('notes')
+      .from('Note')
       .select('*')
       .eq('date', date)
       .order('created_at', { ascending: false });
@@ -40,7 +43,7 @@ export class SupabaseService {
 
   async createNote(note: Omit<Note, 'id' | 'created_at' | 'updated_at'>): Promise<Note | null> {
     const { data, error } = await this.supabase
-      .from('notes')
+      .from('Note')
       .insert([note])
       .select()
       .maybeSingle();
@@ -55,7 +58,7 @@ export class SupabaseService {
 
   async updateNote(id: string, note: Partial<Note>): Promise<Note | null> {
     const { data, error } = await this.supabase
-      .from('notes')
+      .from('Note')
       .update({ ...note, updated_at: new Date().toISOString() })
       .eq('id', id)
       .select()
@@ -71,7 +74,7 @@ export class SupabaseService {
 
   async deleteNote(id: string): Promise<boolean> {
     const { error } = await this.supabase
-      .from('notes')
+      .from('Note')
       .delete()
       .eq('id', id);
 
@@ -85,7 +88,7 @@ export class SupabaseService {
 
   async getAllNoteDates(): Promise<string[]> {
     const { data, error } = await this.supabase
-      .from('notes')
+      .from('Note')
       .select('date');
 
     if (error) {
